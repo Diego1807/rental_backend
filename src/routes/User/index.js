@@ -121,6 +121,15 @@ export default () => {
           res.status(500).json(error);
         });
     });
+    api.get('/:username/returnItem/:productID', token, (req, res) => {
+        let username = req.params.username;
+        let productID = req.params.productID;
+        User.returnItem(username, productID).then((result) => {
+          res.json(result);
+        }).catch((error) => {
+          res.status(500).json(error);
+        })
+    });
     api.get('/:username/items', token, (req, res) => {
         let username = req.params.username;
         let token = req.header('token');

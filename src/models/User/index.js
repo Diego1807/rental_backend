@@ -106,6 +106,29 @@ export default class User{
       return error;
     });
   }
+  static returnItem(username, productID) {
+    let query = new Query(db.getInstance());
+    const label = 'User';
+    const properties = {username: username};
+    query.callReturn(query.getRelatedNodes(query.matchNode(label, properties), ['lends']));
+    return query.runQuery().then((res) => {
+      let items = [];
+      for(var i=0;i<res.length;i++) {
+        items.push(res[i].properties.productID);
+      }
+      if(items.indexOf(productID) > -1) {
+        item.delete(productID).then((res) => {
+          return 'Item returned successfully';
+        }).catch((err) => {
+          return err;
+        });
+      } else {
+        return 'Unable to find item';
+      }
+    }).catch((err) => {
+      return err;
+    });
+  }
   static updateItem(username, productID, updatedProps) {
     let query = new Query(db.getInstance());
     let labels = ['User', 'Item'];
@@ -136,6 +159,6 @@ export default class User{
       return result;
     }).catch((err) => {
       return err;
-    })
+    });
   }
 }
