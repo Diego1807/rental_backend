@@ -139,5 +139,14 @@ export default () => {
           res.status(500).json(error);
         })
     });
+    api.get('/:username/borrowedItems', token, (req, res) => {
+        let username = req.params.username;
+        let token = req.header('token');
+        User.getBorrowedItems(username, token).then((result) => {
+          res.json(result);
+        }).catch((err) => {
+          res.status(500).json(error);
+        })
+    });
     return api;
 }  

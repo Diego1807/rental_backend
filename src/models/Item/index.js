@@ -72,4 +72,19 @@ export default class item {
       return err;
     });
   }
+  static find(name) {
+    let query = new Query(db.getInstance());
+    const labels = ['Item'];
+    const propertiesList = [{name: '.*' + name + '.*'}];
+    query.callReturn(query.matchWhere(labels, propertiesList, ['=~'])); //Condition extender list must match the sub string to all names;
+    return query.runQuery().then((res) => {
+      let result = [];
+      for(var i=0;i<res.length;i++) {
+        result.push({Item: res[i].properties});
+      }
+      return result;
+    }).catch((err) => {
+      return err;
+    });
+  }
 }

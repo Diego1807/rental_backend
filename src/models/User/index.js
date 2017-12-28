@@ -161,4 +161,19 @@ export default class User{
       return err;
     });
   }
+  static getBorrowedItems(username, token) {
+    let query = new Query(db.getInstance());
+    const label = 'User';
+    const properties = {username: username, token: token};
+    query.callReturn(query.getRelatedNodes(query.matchNode(label, properties), ['borrows']));
+    return query.runQuery().then((res) => {
+      let result = [];
+      for(var i=0;i<res.length;i++) {
+        result.push({Item: res[i].properties});
+      }
+      return result;
+    }).catch((err) => {
+      return err;
+    })
+  }
 }
