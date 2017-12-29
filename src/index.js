@@ -21,6 +21,9 @@ app.use(morgan('dev'));
 
 app.use('/User', user());
 app.use('/Item', item());
+app.get('/test', function(req, res) {
+  res.json('test');
+})
 
 app.listen(process.env.PORT || 8080, () => {
     console.log('Listening on port 8080');
